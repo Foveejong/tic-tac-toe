@@ -37,5 +37,32 @@ function Gameboard() {
     return { getBoard, updateBoard }
 }
 
+function gameController(playerOneName = "You", playerTwoName = "Computer") {
+    // create the board
+    const gameBoard = Gameboard();
+    const board = gameBoard.getBoard();
+
+    // create players
+    const p1 = {name: playerOneName, token: "X"};
+    const p2 = {name: playerTwoName, token: "O"};
+
+    // initialise first player to go
+    let currentPlayer = p1;
+
+    // alternate between turns
+    function switchPlayer() {
+        currentPlayer = (currentPlayer === p1) ? p2 : p1;
+    }
+
+    // play a round
+    function playRound() {
+        // if returned false, which means illegal move, do not switchPlayer
+        if (gameBoard.updateBoard("x", 1, 1)) switchPlayer();
+    }
+
+    // win con
+    return { playRound }
+}
+
 
 
