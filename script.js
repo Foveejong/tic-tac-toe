@@ -4,13 +4,15 @@ function Gameboard() {
     const columns = 3;
     const gameBoard = [];
 
+    let index = 0;
     // create 2D array to simulate ttt box
     for (let i = 0; i < rows; i++) {
-    // create a row
+        // create a row
         gameBoard[i] = [];
         for (let j = 0; j < columns; j++) {
             // create a column in each row
-            gameBoard[i].push(" ");
+            gameBoard[i].push(Cell(index));
+            index++;
         }
     }
 
@@ -20,11 +22,11 @@ function Gameboard() {
         for (let k = 0; k < rows; k++) {
             for (let h = 0; h < columns; h++) {
                 // if empty, update with token
-                if (gameBoard[row][col] === " ") {
-                    gameBoard[row][col] = token;
-                    return
+                if (!gameBoard[row][col].getContent()) {
+                    gameBoard[row][col].updateContent(token);
+                    return true
                 } else {
-                    // if found slot and is filled, return 
+                    // if found slot and is filled, return false
                     return false
                 }
             }
@@ -37,10 +39,24 @@ function Gameboard() {
     return { getBoard, updateBoard }
 }
 
+function Cell(index) {
+    let indexNo = index;
+    let content = "";
+    
+    const getIndex = () => indexNo;
+    const updateContent = (token) => content = token;
+    const getContent = () => content;
+
+    return {getIndex, updateContent, getContent}
+}
+
 function gameController(playerOneName = "You", playerTwoName = "Computer") {
-    // create the board
+    // create and get board
     const gameBoard = Gameboard();
     const board = gameBoard.getBoard();
+    // const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    // const XTokenArr = [];
+    // const OTokenArr = [];
 
     // create players
     const p1 = {name: playerOneName, token: "X"};
@@ -54,14 +70,26 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         currentPlayer = (currentPlayer === p1) ? p2 : p1;
     }
 
+    
     // play a round
-    function playRound() {
+    function playRound(row, col) {
         // if returned false, which means illegal move, do not switchPlayer
-        if (gameBoard.updateBoard("x", 1, 1)) switchPlayer();
+        // otherwise change turns
+        if (gameBoard.updateBoard(currentPlayer.token, row, col)) {
+            // after every move, check if someone won
+            //if won, alert "won!"
+            if (checkWins.call(this, currentPlayer.token, row, col)) {
+                alert(`${currentPlayer.name} won!`)
+                
+            }
+
+            // if no outcome, continue game
+            switchPlayer()
+        };
     }
 
     // win con
-    return { playRound }
+    return {playRound, board}
 }
 
 
