@@ -93,6 +93,12 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         return (outcomeArr.length === 1) ? true : false
     }
 
+    function printBoard() {
+        // go to each row, then each cell and get the cell's content
+        const allTokenPositionsArr = board.map(row => row.map(cell => cell.getContent()));
+        console.log(allTokenPositionsArr);
+    }
+
     // play a round
     function playRound(row, col) {
         // if returned false, which means illegal move, do not switchPlayer
@@ -106,8 +112,10 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
 
             // if no outcome, continue game
             switchPlayer()
-        };
+        }
+        // print the board after each playRound called
+        printBoard()
     }
 
-    return {playRound}
+    return {playRound, printBoard}
 }
