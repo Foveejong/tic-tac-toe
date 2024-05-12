@@ -54,9 +54,9 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     // create and get board
     const gameBoard = Gameboard();
     const board = gameBoard.getBoard();
-    // const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-    // const XTokenArr = [];
-    // const OTokenArr = [];
+    const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    const XTokenArr = [];
+    const OTokenArr = [];
 
     // create players
     const p1 = {name: playerOneName, token: "X"};
@@ -70,7 +70,29 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         currentPlayer = (currentPlayer === p1) ? p2 : p1;
     }
 
-    
+    // check if a user won
+    function checkWins(token, row, col) {
+    // append token positions to respective positions
+        if (token === "X") {
+            XTokenArr.push(board[row][col].getIndex());
+            return compareCombinations(XTokenArr)
+        } else {
+            OTokenArr.push(board[row][col].getIndex());
+            return compareCombinations(OTokenArr)
+        }
+    }
+
+    function compareCombinations(arr) {
+        // check if arr is length of 3, if not exit immediately
+        if (arr.length < 3) return false
+
+        // sort arr using sort() as single digits only then compare to combinations
+        const outcomeArr = combinations.filter((comb) => comb.join() === arr.sort().join())
+
+        // if found a winning combination, return true for win
+        return (outcomeArr.length === 1) ? true : false
+    }
+
     // play a round
     function playRound(row, col) {
         // if returned false, which means illegal move, do not switchPlayer
@@ -78,9 +100,8 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         if (gameBoard.updateBoard(currentPlayer.token, row, col)) {
             // after every move, check if someone won
             //if won, alert "won!"
-            if (checkWins.call(this, currentPlayer.token, row, col)) {
+            if (checkWins(currentPlayer.token, row, col)) {
                 alert(`${currentPlayer.name} won!`)
-                
             }
 
             // if no outcome, continue game
@@ -88,9 +109,5 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         };
     }
 
-    // win con
-    return {playRound, board}
+    return {playRound}
 }
-
-
-
