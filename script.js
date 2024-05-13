@@ -106,6 +106,10 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         if (rounds == 9) return true
     }
 
+    function resetBoard() {
+        board.map(row => row.map(cell => cell.updateContent('')))
+    }
+
     // play a round
     function playRound(row, col) {
         // if returned false, which means illegal move, do not switchPlayer
@@ -116,12 +120,14 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
             // check for draw
             if (checkDraw(rounds)) {
                 alert("Draw!")
+                resetBoard();
             }
 
             // after every move, check if someone won
             //if won, alert "won!"
             if (checkWins(currentPlayer.token, row, col)) {
                 alert(`${currentPlayer.name} won!`)
+                resetBoard();
             }
 
             // if no outcome, continue game
