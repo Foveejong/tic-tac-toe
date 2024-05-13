@@ -102,10 +102,12 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         console.log(allTokenPositionsArr);
     }
 
+    // check for draws by comparing to rounds variable
     function checkDraw(rounds) {
         if (rounds == 9) return true
     }
 
+    // reset board
     function resetBoard() {
         board.map(row => row.map(cell => cell.updateContent('')))
     }
@@ -138,4 +140,8 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     }
 
     return {playRound, printBoard}
+}
+
+function screenController() {
+    const game = gameController();
 }

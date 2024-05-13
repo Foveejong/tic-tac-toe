@@ -1,0 +1,51 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --svg-height: 15vh;
+}
+
+.cross {
+    height: var(--svg-height);
+    filter: invert(55%) sepia(100%) hue-rotate(150deg) saturate(3);
+}
+
+.circle {
+    height: var(--svg-height);
+    filter: invert(55%) sepia(100%) hue-rotate(300deg) saturate(8);
+}
+
+.container {
+    height: 100vh;
+}
+
+.container p {
+    text-align: center;
+    font-size: max(3rem, 8vh);
+    padding: 3vh;
+}
+
+.ttt-container {
+    height: 30rem;
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    width: 30rem;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    border: black solid 1px;
+}
+
+.cell {
+    border: black solid 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
