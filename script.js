@@ -57,6 +57,7 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
     const XTokenArr = [];
     const OTokenArr = [];
+    let rounds = 0;
 
     // create players
     const p1 = {name: playerOneName, token: "X"};
@@ -101,11 +102,22 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         console.log(allTokenPositionsArr);
     }
 
+    function checkDraw(rounds) {
+        if (rounds == 9) return true
+    }
+
     // play a round
     function playRound(row, col) {
         // if returned false, which means illegal move, do not switchPlayer
         // otherwise change turns
         if (gameBoard.updateBoard(currentPlayer.token, row, col)) {
+            // increment number of rounds played
+            rounds++;
+            // check for draw
+            if (checkDraw(rounds)) {
+                alert("Draw!")
+            }
+
             // after every move, check if someone won
             //if won, alert "won!"
             if (checkWins(currentPlayer.token, row, col)) {
