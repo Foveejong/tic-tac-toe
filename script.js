@@ -17,16 +17,16 @@ function Gameboard() {
     }
 
     // update the board with chosen cell
-    function updateBoard(token, row, col) {
+    function updateBoard(token, index) {
         // check if square is empty
         for (let k = 0; k < rows; k++) {
             for (let h = 0; h < columns; h++) {
                 // if empty, update with token
-                if (!gameBoard[row][col].getContent()) {
-                    gameBoard[row][col].updateContent(token);
+                if (!gameBoard[k][h].getContent() && gameBoard[k][h].getIndex() === index) {
+                    gameBoard[k][h].updateContent(token);
                     return true
-                } else {
-                    // if found slot and is filled, return false
+                } else if (gameBoard[k][h].getContent() && gameBoard[k][h].getIndex() === index){
+                    // if found slot but is filled, return false
                     return false
                 }
             }
@@ -72,13 +72,15 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     }
 
     // check if a user won
-    function checkWins(token, row, col) {
+    function checkWins(token, index) {
     // append token positions to respective positions
         if (token === "X") {
-            XTokenArr.push(board[row][col].getIndex());
+            // XTokenArr.push(board[row][col].getIndex());
+            XTokenArr.push(index);
             return compareCombinations(XTokenArr)
         } else {
-            OTokenArr.push(board[row][col].getIndex());
+            // OTokenArr.push(board[row][col].getIndex());
+            OTokenArr.push(index);
             return compareCombinations(OTokenArr)
         }
     }
@@ -113,10 +115,10 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     }
 
     // play a round
-    function playRound(row, col) {
+    function playRound(index) {
         // if returned false, which means illegal move, do not switchPlayer
         // otherwise change turns
-        if (gameBoard.updateBoard(currentPlayer.token, row, col)) {
+        if (gameBoard.updateBoard(currentPlayer.token, index)) {
             // increment number of rounds played
             rounds++;
             // check for draw
@@ -127,7 +129,7 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
 
             // after every move, check if someone won
             //if won, alert "won!"
-            if (checkWins(currentPlayer.token, row, col)) {
+            if (checkWins(currentPlayer.token, index)) {
                 alert(`${currentPlayer.name} won!`)
                 resetBoard();
             }
@@ -150,6 +152,11 @@ function screenController() {
 
     // reset the board on clicking restart button 
     restart.addEventListener("click", e => game.resetBoard())
+
+//     cells.forEach((cell) => {
+//         cell.addEventListener()
+//     })
+//     console.log(cells)
 }
 
 screenController();
