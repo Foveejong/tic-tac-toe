@@ -86,8 +86,10 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         // check if arr is length of 3, if not exit immediately
         if (arr.length < 3) return false
 
-        // sort arr using sort() as single digits only then compare to combinations
-        const outcomeArr = combinations.filter((comb) => comb.join() === arr.sort().join())
+        // use every() and includes() methods instead of joining strings
+        // to take care of cases where users take >3 moves per user.
+        // use idea of comparing a subarray (comb) to an array (arr)
+        const outcomeArr = combinations.filter((comb) => comb.every(element => arr.includes(element)))
 
         // if found a winning combination, return true for win
         return (outcomeArr.length === 1) ? true : false
