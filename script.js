@@ -139,9 +139,17 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         printBoard()
     }
 
-    return {playRound, printBoard}
+    return {playRound, printBoard, resetBoard, printBoard}
 }
 
 function screenController() {
     const game = gameController();
+    const cells = Array.from(document.querySelectorAll(".cell"));
+    // const start = document.querySelector("start")
+    const restart = document.querySelector(".restart");
+
+    // reset the board on clicking restart button 
+    restart.addEventListener("click", e => game.resetBoard())
 }
+
+screenController();
