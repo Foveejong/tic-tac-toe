@@ -60,16 +60,20 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     let rounds = 0;
 
     // create players
-    const p1 = {name: playerOneName, token: "X"};
-    const p2 = {name: playerTwoName, token: "O"};
+    const players = [
+        {name: playerOneName, token: "X"},
+        {name: playerTwoName, token: "O"}
+    ]
 
     // initialise first player to go
-    let currentPlayer = p1;
+    let currentPlayer = players[0];
 
     // alternate between turns
     function switchPlayer() {
-        currentPlayer = (currentPlayer === p1) ? p2 : p1;
+        currentPlayer = (currentPlayer === players[0]) ? players[1] : players[0];
     }
+
+    const checkPlayer = () => currentPlayer;
 
     // check if a user won
     function checkWins(token, index) {
@@ -116,47 +120,100 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
 
     // play a round
     function playRound(index) {
-        // if returned false, which means illegal move, do not switchPlayer
-        // otherwise change turns
+        // if returned false, which means illegal move, do not switchPlayer otherwise change turns
         if (gameBoard.updateBoard(currentPlayer.token, index)) {
             // increment number of rounds played
             rounds++;
-            // check for draw
-            if (checkDraw(rounds)) {
-                alert("Draw!")
-                resetBoard();
-            }
 
             // after every move, check if someone won
-            //if won, alert "won!"
+            // prioritise wins
             if (checkWins(currentPlayer.token, index)) {
                 alert(`${currentPlayer.name} won!`)
-                resetBoard();
-            }
-
-            // if no outcome, continue game
+            } else if (checkDraw(rounds)) {
+                alert("Draw!")
+            } 
+            // continue game if no outcomes
             switchPlayer()
         }
         // print the board after each playRound called
         printBoard()
     }
-
-    return {playRound, printBoard, resetBoard, printBoard}
+    return {playRound, resetBoard, printBoard, checkPlayer, getBoard: gameBoard.getBoard}
 }
 
 function screenController() {
     const game = gameController();
-    const cells = Array.from(document.querySelectorAll(".cell"));
+    const grid = document.querySelector(".grid");
+    // const cells = Array.from(document.querySelectorAll(".cell"));
     // const start = document.querySelector("start")
     const restart = document.querySelector(".restart");
 
     // reset the board on clicking restart button 
     restart.addEventListener("click", e => game.resetBoard())
 
-//     cells.forEach((cell) => {
-//         cell.addEventListener()
-//     })
-//     console.log(cells)
+    // add svg functions
+    function addCross(index) {
+        let img = document.createElement("img");
+        img.src = "./svg/cross-svgrepo-com.svg";
+        img.alt = "cross";
+        img.classList.toggle("cross");
+        document.querySelector(`.cell-${index}`).appendChild(img);
+    }
+
+    function addCircle(index) {
+        let img = document.createElement("img");
+        img.src = "./svg/circle-double.svg";
+        img.alt = "double circle";
+        img.classList.toggle("circle");
+        document.querySelector(`.cell-${index}`).appendChild(img);
+    }
+
+    function updateScreen() {
+        const board = game.getBoard();
+
+        // reset the grid if not multiple buttons per gridcell
+        grid.textContent = "";
+
+        // count cells
+        let index = 0;  
+
+        // for each cell, create a button and input svg
+        board.forEach(row => {
+            row.forEach((cell) => {
+                const cellButton = document.createElement("button");
+                const cellContent = cell.getContent();
+
+                // add classes and data attribute
+                cellButton.classList.add("cell", `cell-${index}`);
+                cellButton.setAttribute("data", index);
+                grid.appendChild(cellButton);
+
+                // update cell content
+                if (cellContent === "X") {
+                    addCross(index);
+                } else if (cellContent === "O"){
+                    addCircle(index);
+                }
+                index++;
+            })
+        })
+    }
+
+    // add event listener to board to get index to playRound
+    function clickHandlerBoard(e) {
+        // get index of clicked grid
+        const selectedIndex = e.target.getAttribute("data");
+        // make sure never click gaps in column
+        if (!selectedIndex) return
+
+        // playRound with index as input
+        game.playRound(+selectedIndex);
+        updateScreen();
+    }
+    grid.addEventListener("click", clickHandlerBoard)
+
+    // initial render
+    updateScreen()
 }
 
 screenController();
