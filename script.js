@@ -178,7 +178,7 @@ function screenController() {
     function disableGrid() {
         let index = 0;
         board.forEach(row => {
-            row.forEach((cell) => {
+            row.forEach(() => {
                 const selectedCell = document.querySelector(`.cell-${index}`)
 
                 // disable each cell

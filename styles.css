@@ -2,10 +2,12 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 :root {
     --svg-height: 15vh;
+    --common-length: 30rem;
 }
 
 .cross {
@@ -18,37 +20,89 @@
     filter: invert(55%) sepia(100%) hue-rotate(300deg) saturate(8);
 }
 
+.title-wrapper {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.title-container {
+    width: var(--common-length);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button.restart {
+    padding: 2vh;
+    margin-right: 3vh; 
+    border-radius: 10px;
+    border-style: none;
+    background: linear-gradient(45deg, rgb(255, 182, 182), rgb(186, 186, 255));
+    font-size: 1.2rem;
+    color: white;
+}
+
+button.restart:hover {
+    background: linear-gradient(45deg, rgb(255, 119, 119), rgb(118, 118, 255));
+    cursor: pointer;
+    color: black;
+}
+
 .container {
     height: 100vh;
+    background-color: rgb(161, 224, 255);
 }
 
 .container p {
-    text-align: center;
-    font-size: max(3rem, 8vh);
+    font-size: max(3rem, 7vh);
     padding: 3vh;
+    color: white;
 }
 
 .ttt-container {
-    height: 30rem;
+    height: var(--common-length);
     display: flex;
     justify-content: center;
 }
 
 .grid {
-    width: 30rem;
+    width: var(--common-length);
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    border: black solid 1px;
+    border-radius: 20px;
 }
 
 .cell {
-    border: black solid 1px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: rgb(209, 169, 246);
+    border-color: rgb(226, 223, 170);
+}
+
+.cell:hover {
+    background-color: rgb(175, 105, 241);
+}
+
+.cell:disabled {
+    background-color: rgb(246, 169, 169);
+}
+
+.cell:nth-child(1) {
+    border-radius: 20px 0 0 0;
+}
+
+.cell:nth-child(3) {
+    border-radius: 0 20px 0 0;
+}
+.cell:nth-child(7) {
+    border-radius: 0 0 0 20px;
+}
+.cell:nth-child(9) {
+    border-radius: 0 0 20px 0;
 }
 
 button.cell:hover {
