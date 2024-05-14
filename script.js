@@ -55,8 +55,8 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     const gameBoard = Gameboard();
     const board = gameBoard.getBoard();
     const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-    const XTokenArr = [];
-    const OTokenArr = [];
+    let XTokenArr = [];
+    let OTokenArr = [];
     let rounds = 0;
 
     // create players
@@ -116,6 +116,9 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
     // reset board
     function resetBoard() {
         board.map(row => row.map(cell => cell.updateContent('')))
+        XTokenArr = [];
+        OTokenArr = [];
+        rounds = 0;
     }
 
     // play a round
@@ -129,8 +132,10 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
             // prioritise wins
             if (checkWins(currentPlayer.token, index)) {
                 alert(`${currentPlayer.name} won!`)
+                return true
             } else if (checkDraw(rounds)) {
                 alert("Draw!")
+                return false
             } 
             // continue game if no outcomes
             switchPlayer()
@@ -144,12 +149,16 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
 function screenController() {
     const game = gameController();
     const grid = document.querySelector(".grid");
+    const board = game.getBoard();
     // const cells = Array.from(document.querySelectorAll(".cell"));
     // const start = document.querySelector("start")
     const restart = document.querySelector(".restart");
 
     // reset the board on clicking restart button 
-    restart.addEventListener("click", e => game.resetBoard())
+    restart.addEventListener("click", e => {
+        game.resetBoard();
+        updateScreen();
+    })
 
     // add svg functions
     function addCross(index) {
@@ -169,8 +178,6 @@ function screenController() {
     }
 
     function updateScreen() {
-        const board = game.getBoard();
-
         // reset the grid if not multiple buttons per gridcell
         grid.textContent = "";
 
@@ -199,17 +206,41 @@ function screenController() {
         })
     }
 
+    function disableGrid() {
+        let index = 0;
+        board.forEach(row => {
+            row.forEach((cell) => {
+                const selectedCell = document.querySelector(`.cell-${index}`)
+
+                // disable each cell
+                selectedCell.setAttribute("disabled", "");
+                index++;
+            })
+        })
+    }
+
     // add event listener to board to get index to playRound
     function clickHandlerBoard(e) {
+        let end = false;
         // get index of clicked grid
         const selectedIndex = e.target.getAttribute("data");
         // make sure never click gaps in column
         if (!selectedIndex) return
 
         // playRound with index as input
-        game.playRound(+selectedIndex);
+        // end is a bool, if true means win, false means draw
+        end = game.playRound(+selectedIndex)
+
+        // update after every round
         updateScreen();
+
+        // check for outcome
+        if (end) {
+            // if ended don't accept more inputs
+            disableGrid();
+        }
     }
+
     grid.addEventListener("click", clickHandlerBoard)
 
     // initial render
