@@ -8,6 +8,7 @@
 :root {
     --svg-height: 15vh;
     --common-length: 30rem;
+    --blue: rgb(161, 224, 255);
 }
 
 .cross {
@@ -51,7 +52,7 @@ button.restart:hover {
 
 .container {
     height: 100vh;
-    background-color: rgb(161, 224, 255);
+    background-color: var(--blue);
 }
 
 .container p {
@@ -61,14 +62,15 @@ button.restart:hover {
 }
 
 .ttt-container {
-    height: var(--common-length);
+    min-height: calc(var(--common-length)+3rem);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .grid {
     width: var(--common-length);
-    height: 100%;
+    min-height: var(--common-length);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -107,4 +109,56 @@ button.restart:hover {
 
 button.cell:hover {
     cursor: pointer;
+}
+
+.display-turn {
+    /* font-size: 3rem; */
+}
+
+.dialog {
+    position: absolute;
+    top: 30vh;
+    margin-left: auto; 
+    margin-right: auto; 
+    min-width: 300px;
+    min-height: 20vh;
+
+    padding: 3vw 2vw;
+    border-radius: 20px;
+    background-color: antiquewhite;
+}
+
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2vw;
+}
+
+input[type="text"] {
+    background-color: azure;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: gold;
+    padding: 0.8vw;
+}
+
+input:focus {
+    outline: none;
+    border-color: rgb(80, 194, 233);
+}
+
+form button {
+    align-self: center;
+    padding: 1vh 3vw;
+    border-radius: 10px;
+    border-style: solid;
+    background-color: var(--blue);
+    border-color: rgb(125, 102, 252);
 }
