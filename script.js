@@ -150,8 +150,6 @@ function screenController() {
     const game = gameController();
     const grid = document.querySelector(".grid");
     const board = game.getBoard();
-    // const cells = Array.from(document.querySelectorAll(".cell"));
-    // const start = document.querySelector("start")
     const restart = document.querySelector(".restart");
 
     // reset the board on clicking restart button 
@@ -175,6 +173,19 @@ function screenController() {
         img.alt = "double circle";
         img.classList.toggle("circle");
         document.querySelector(`.cell-${index}`).appendChild(img);
+    }
+
+    function disableGrid() {
+        let index = 0;
+        board.forEach(row => {
+            row.forEach((cell) => {
+                const selectedCell = document.querySelector(`.cell-${index}`)
+
+                // disable each cell
+                selectedCell.setAttribute("disabled", "");
+                index++;
+            })
+        })
     }
 
     function updateScreen() {
@@ -201,19 +212,6 @@ function screenController() {
                 } else if (cellContent === "O"){
                     addCircle(index);
                 }
-                index++;
-            })
-        })
-    }
-
-    function disableGrid() {
-        let index = 0;
-        board.forEach(row => {
-            row.forEach((cell) => {
-                const selectedCell = document.querySelector(`.cell-${index}`)
-
-                // disable each cell
-                selectedCell.setAttribute("disabled", "");
                 index++;
             })
         })
