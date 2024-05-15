@@ -147,10 +147,30 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
 }
 
 function screenController() {
-    const game = gameController();
+    const dialog = document.querySelector(".dialog");
+    const form = document.querySelector("form");
     const grid = document.querySelector(".grid");
-    const board = game.getBoard();
     const restart = document.querySelector(".restart");
+    let game = gameController();
+    let board = game.getBoard();
+
+    // show Modal to get names
+    document.addEventListener("DOMContentLoaded", dialog.showModal())
+
+    // load page again when user finishes filling modal or esc 
+    dialog.addEventListener("submit", e => {
+        const playerOne = form.playerOneName.value;
+        const playerTwo = form.playerTwoName.value;
+
+        if (playerOne && playerTwo) {
+            game = gameController(playerOne, playerTwo);
+        } else if (!playerOne && playerTwo) {
+            game = gameController("You", playerTwo);
+        } else if (playerOne && !playerTwo) {
+            game = gameController(playerOne, "Computer");
+        }
+        board = game.getBoard();
+    })  
 
     // reset the board on clicking restart button 
     restart.addEventListener("click", e => {

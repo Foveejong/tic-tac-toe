@@ -112,7 +112,7 @@ button.cell:hover {
 }
 
 .display-turn {
-    /* font-size: 3rem; */
+    font-size: 2rem;
 }
 
 .dialog {
@@ -161,4 +161,9 @@ form button {
     border-style: solid;
     background-color: var(--blue);
     border-color: rgb(125, 102, 252);
+}
+
+form button:hover {
+    background-color: rgb(29, 180, 255);
+    cursor: pointer;
 }
