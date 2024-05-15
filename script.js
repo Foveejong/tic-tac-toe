@@ -119,6 +119,7 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         XTokenArr = [];
         OTokenArr = [];
         rounds = 0;
+        currentPlayer = players[0];
     }
 
     // play a round
