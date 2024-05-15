@@ -171,6 +171,7 @@ function screenController() {
     restart.addEventListener("click", e => {
         game.resetBoard();
         updateScreen();
+        display.textContent = "Welcome!";
     })
 
     // add svg functions
