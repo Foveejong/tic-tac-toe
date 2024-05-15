@@ -112,7 +112,8 @@ button.cell:hover {
 }
 
 .display-turn {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    color: white;
 }
 
 .dialog {

@@ -132,11 +132,9 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
             // after every move, check if someone won
             // prioritise wins
             if (checkWins(currentPlayer.token, index)) {
-                alert(`${currentPlayer.name} won!`)
-                return true
+                return "won"
             } else if (checkDraw(rounds)) {
-                alert("Draw!")
-                return false
+                return "draw"
             } 
             // continue game if no outcomes
             switchPlayer()
@@ -152,6 +150,7 @@ function screenController() {
     const form = document.querySelector("form");
     const grid = document.querySelector(".grid");
     const restart = document.querySelector(".restart");
+    const display = document.querySelector(".display-turn")
     let game = gameController();
     let board = game.getBoard();
 
@@ -171,6 +170,9 @@ function screenController() {
             game = gameController(playerOne, "Computer");
         }
         board = game.getBoard();
+        
+        // initial display
+        display.textContent = `${playerOne}'s turn`;
     })  
 
     // reset the board on clicking restart button 
@@ -200,7 +202,7 @@ function screenController() {
         let index = 0;
         board.forEach(row => {
             row.forEach(() => {
-                const selectedCell = document.querySelector(`.cell-${index}`)
+                const selectedCell = document.querySelector(`.cell-${index}`);
 
                 // disable each cell
                 selectedCell.setAttribute("disabled", "");
@@ -216,17 +218,18 @@ function screenController() {
         // count cells
         let index = 0;  
 
+        
         // for each cell, create a button and input svg
         board.forEach(row => {
             row.forEach((cell) => {
                 const cellButton = document.createElement("button");
                 const cellContent = cell.getContent();
-
+                
                 // add classes and data attribute
                 cellButton.classList.add("cell", `cell-${index}`);
                 cellButton.setAttribute("data", index);
                 grid.appendChild(cellButton);
-
+                
                 // update cell content
                 if (cellContent === "X") {
                     addCross(index);
@@ -236,6 +239,8 @@ function screenController() {
                 index++;
             })
         })
+        // display.textContent = `${currentPlayer.name}'s Turn!`;
+
     }
 
     // add event listener to board to get index to playRound
@@ -248,22 +253,29 @@ function screenController() {
 
         // playRound with index as input
         // end is a bool, if true means win, false means draw
-        end = game.playRound(+selectedIndex)
+        end = game.playRound(+selectedIndex);
+
+        // check current player name and display
+        display.textContent = `${game.checkPlayer().name}'s turn`;
 
         // update after every round
         updateScreen();
 
         // check for outcome
-        if (end) {
+        if (end === "won") {
             // if ended don't accept more inputs
             disableGrid();
+            display.textContent = `${game.checkPlayer().name} Won!`;
+        } else if (end === "draw" ) {
+            disableGrid();
+            display.textContent = "Draw!";
         }
     }
 
-    grid.addEventListener("click", clickHandlerBoard)
+    grid.addEventListener("click", clickHandlerBoard);
 
     // initial render
-    updateScreen()
+    updateScreen();
 }
 
 screenController();
