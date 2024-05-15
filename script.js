@@ -102,12 +102,6 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
         return (outcomeArr.length === 1) ? true : false
     }
 
-    function printBoard() {
-        // go to each row, then each cell and get the cell's content
-        const allTokenPositionsArr = board.map(row => row.map(cell => cell.getContent()));
-        console.log(allTokenPositionsArr);
-    }
-
     // check for draws by comparing to rounds variable
     function checkDraw(rounds) {
         if (rounds == 9) return true
@@ -139,10 +133,8 @@ function gameController(playerOneName = "You", playerTwoName = "Computer") {
             // continue game if no outcomes
             switchPlayer()
         }
-        // print the board after each playRound called
-        printBoard()
     }
-    return {playRound, resetBoard, printBoard, checkPlayer, getBoard: gameBoard.getBoard}
+    return {playRound, resetBoard, checkPlayer, getBoard: gameBoard.getBoard}
 }
 
 function screenController() {
@@ -265,10 +257,10 @@ function screenController() {
         if (end === "won") {
             // if ended don't accept more inputs
             disableGrid();
-            display.textContent = `${game.checkPlayer().name} Won!`;
-        } else if (end === "draw" ) {
+            display.textContent = `${game.checkPlayer().name} Won! Press restart button to restart!`;
+        } else if (end === "draw") {
             disableGrid();
-            display.textContent = "Draw!";
+            display.textContent = "Draw! Press restart button to restart!";
         }
     }
 
